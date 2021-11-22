@@ -1,0 +1,8 @@
+<div class="genres-film">
+    <h2 class="genres">Жанры</h2>
+    {% for genre in genres %}
+        <a href="{{ genre.get_absolute_url }}">
+            <div class="genres-item">{{ genre.name }}</div>
+        </a>
+    {% endfor %}
+</div>

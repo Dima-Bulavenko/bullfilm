@@ -1,7 +1,6 @@
 {% extends "film/base.html" %}
 {% block content %}
-
-    {% for film in cats_video %}
+    {% for film in searched_video %}
         <div>
             <div><a href="{{ film.get_absolute_url }}"><img alt="Film poster" class="img-poster"
                                                             src="{{ film.image.url }}"></a></div>
@@ -9,4 +8,3 @@
         </div>
     {% endfor %}
 {% endblock %}
-

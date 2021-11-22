@@ -1,3 +1,113 @@
+/*Обнуление*/
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 14px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,button,textarea{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+/*--------------------*/
+
+/*pagination*/
+.paginate {
+  text-align: center; }
+  .paginate ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center; }
+  .paginate li {
+    display: inline; }
+  .paginate a {
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1px;
+    margin: 1px 2px;
+    padding: 5px 10px;
+    display: inline-block;
+    border-top: 1px solid #fff;
+    text-decoration: none;
+    color: #717171;
+    font-size: smaller;
+    font-family: "Helvetica Neueu", Helvetica, Arial, sans-serif;
+    text-shadow: white 0 1px 0;
+    background-color: #f5f5f5;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#eaeaea));
+    background-image: -webkit-linear-gradient(top, #f9f9f9, #eaeaea);
+    background-image: -moz-linear-gradient(top, #f9f9f9, #eaeaea);
+    background-image: -ms-linear-gradient(top, #f9f9f9, #eaeaea);
+    background-image: -o-linear-gradient(top, #f9f9f9, #eaeaea);
+    background-image: linear-gradient(top, #f9f9f9, #eaeaea);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#eaeaea'); }
+    .paginate a:first-child, .paginate a.first {
+      margin-left: 0; }
+    .paginate a:last-child, .paginate a.last {
+      margin-right: 0; }
+    .paginate a:hover, .paginate a:focus {
+      border-color: #fff;
+      background-color: #fdfdfd;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#fafafa));
+      background-image: -webkit-linear-gradient(top, #fefefe, #fafafa);
+      background-image: -moz-linear-gradient(top, #fefefe, #fafafa);
+      background-image: -ms-linear-gradient(top, #fefefe, #fafafa);
+      background-image: -o-linear-gradient(top, #fefefe, #fafafa);
+      background-image: linear-gradient(top, #fefefe, #fafafa);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#fefefe', EndColorStr='#fafafa'); }
+    .paginate a.more {
+      box-shadow: 0 0 0 0 transparent;
+      border: 0 none;
+      background: transparent;
+      margin-left: 0;
+      margin-right: 0; }
+    .paginate a.active {
+      box-shadow: rgba(0, 0, 0, 0.75) 0 0 0 0 inset;
+      border-color: #505050;
+      color: #f2f2f2;
+      text-shadow: black 0 1px 0;
+      background-color: #676767;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#5f5f5f), to(#5c5c5c));
+      background-image: -webkit-linear-gradient(top, #5f5f5f, #5c5c5c);
+      background-image: -moz-linear-gradient(top, #5f5f5f, #5c5c5c);
+      background-image: -ms-linear-gradient(top, #5f5f5f, #5c5c5c);
+      background-image: -o-linear-gradient(top, #5f5f5f, #5c5c5c);
+      background-image: linear-gradient(top, #5f5f5f, #5c5c5c);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#5f5f5f', EndColorStr='#5c5c5c'); }
+  /*pagination*/
+
+li {
+  list-style-type: none;
+  /* Убираем маркеры */
+}
+
+
 .index-icon {
 	width: 70px;
 	height: 60px;
@@ -11,3 +121,35 @@
 	width: 166px;
 	height: 250px;
 }
+
+/*кнопка поиска*/
+.d7:after {content:""; clear:both; display:table}
+.d7 form {
+  width: auto;
+  float: right;
+  margin-right: 30px;
+}
+.d7 input {
+  width: 250px;
+  height: 42px;
+  padding-left: 15px;
+  border-radius: 42px;
+  border: 2px solid #324b4e;
+  background: #F9F0DA;
+  outline: none;
+  position: relative;
+  transition: .3s linear;
+}
+.d7 input:focus {
+  width: 300px;
+}
+.d7 button {
+  width: 42px;
+  height: 42px;
+  background: none;
+  border: none;
+  position: absolute;
+  top: -2px;
+  right: 0;
+}
+/*кнопка поиска*/

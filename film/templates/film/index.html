@@ -1,1 +1,51 @@
 {% extends "film/base.html" %}
+{% block content %}
+   {{ request.get_full_path}}
+    <div>
+        <ul>
+            {% for film in filter_video|slice:':3' %}
+                <li>
+                    <a href="{{ film.get_absolute_url }}"><img src="{{ film.image.url }}" alt="{{ film.name }}"
+                                                               width="83" height="116"></a>
+                    <div>{{ film.name }}</div>
+                    <a href="{{ film.get_absolute_url }}">Смотреть онлайн</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div>
+            {% with filter_video|first as first_video %}
+                <video src="{{ first_video.video.url }}" height="500" width="600" controls></video>
+            {% endwith %}
+        </div>
+    </div>
+    <div>
+        <h2>Новинки</h2>
+        <ul>
+            {% for film in video|slice:':7' %}
+                <li>
+                    <a href="{{ film.get_absolute_url }}">
+                        <img src="{{ film.image.url }}" alt="{{ film.name }}" title="{{ film.name }}" height="140"
+                             width="95">
+                        <span>{{ film.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <div class="film-online">
+            <h2>Фильмы онлайн</h2>
+        </div>
+        <div class="list-film">
+            {% for film in video|slice:':12' %}
+                <div class="film">
+                    <div class="image-film"><a href="{{ film.get_absolute_url }}"><img
+                            src="{{ film.image.url }}" alt="{{ film.name }}" width="216" height="324"></a></div>
+                    <div class="name-film"><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></div>
+                    <div class="release_year"><span>Год выпуска: {{ film.release_year }}</span></div>
+                </div>
+            {% endfor %}
+        </div>
+        {% include "film/my_templates/genres.html" %}
+    </div>
+{% endblock %}

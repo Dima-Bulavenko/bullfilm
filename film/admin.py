@@ -9,9 +9,11 @@ class CategoriesAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
+class GenresAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
 
 admin.site.register(models.Video, VideoAdmin)
 admin.site.register(models.Categories, CategoriesAdmin)
 admin.site.register(models.Directors)
 admin.site.register(models.Actors)
-admin.site.register(models.Genres)
+admin.site.register(models.Genres, GenresAdmin)

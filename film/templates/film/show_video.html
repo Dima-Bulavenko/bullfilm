@@ -35,9 +35,12 @@
         <div><h2>Про что фильм "{{ video.name }}"</h2></div>
         <div>{{ video.description }}</div>
     </div>
-
-    <video src="{{ video.video.url }}" height="500" width="600" controls ></video>
-
+    <br>
+    {% if video.video %}
+        <video src="{{ video.video.url }}" height="500" width="600" controls ></video>
+    {% else %}
+        <p>Контент отсутствует</p>
+    {% endif %}
 
 
 {% endblock %}

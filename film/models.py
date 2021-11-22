@@ -7,9 +7,9 @@ from .choices import *
 class Video(models.Model):
     rating = models.IntegerField("Рейтинг", default=0)
     release_year = models.IntegerField("Год выпуска", blank=True)
-    directors = models.ManyToManyField("Directors", verbose_name="Режиссер", blank=True)
-    genres = models.ManyToManyField("Genres", verbose_name="Жанры", )
-    actors = models.ManyToManyField("Actors", verbose_name="Актеры", blank=True)
+    directors = models.ManyToManyField("Directors", verbose_name="Режиссер", blank=True,)
+    genres = models.ManyToManyField("Genres", verbose_name="Жанры",)
+    actors = models.ManyToManyField("Actors", verbose_name="Актеры", blank=True,)
     country = models.CharField("Страна", max_length=100)
     name = models.CharField("Название", max_length=100)
     categories = models.ForeignKey("Categories", on_delete=models.CASCADE, verbose_name="Категории")
@@ -74,9 +74,13 @@ class Actors(models.Model):
 
 class Genres(models.Model):
     name = models.CharField(max_length=100, verbose_name="Жанры", choices=VIDEO_GENRES_CHOICES)
+    slug = models.SlugField("genre_URL", unique=True, max_length=255, db_index=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("genre", kwargs={"genre_slug": self.slug, })
 
     class Meta:
         ordering = ["name"]

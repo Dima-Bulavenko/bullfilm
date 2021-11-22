@@ -1,0 +1,39 @@
+{% if page_obj.has_other_pages %}
+    <div class="paginate">
+        <ul>
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Назад</a></li>
+            {% else %}
+                <li>Назад</li>
+            {% endif %}
+
+            {% for p in paginator.page_range %}
+                {% if p == page_obj.number %}
+                    <li>{{ p }}</li>
+                {% elif p == 1 %}
+                    {% if page_obj.number > 4 %}
+                        <li><a href="?page={{ p }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ p }}</a></li>
+                        <li>...</li>
+                    {% else %}
+                        <li><a href="?page={{ p }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ p }}</a></li>
+                    {% endif %}
+                {% elif p == paginator.num_pages %}
+                    {% if page_obj.number < paginator.num_pages|add:-3 %}
+                        <li>...</li>
+                        <li><a href="?page={{ p }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ p }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ p }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ p }}</a></li>
+                    {% endif %}
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <li><a href="?page={{ p }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Вперед</a></li>
+            {% else %}
+                <li>Вперед</li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
