@@ -1,12 +1,6 @@
 {% extends "film/base.html" %}
+{% load film_tags %}
 {% block content %}
-
-    {% for film in cats_video %}
-        <div>
-            <div><a href="{{ film.get_absolute_url }}"><img alt="Film poster" class="img-poster"
-                                                            src="{{ film.image.url }}"></a></div>
-            <div><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></div>
-        </div>
-    {% endfor %}
+    {% show_content cats_video title %}
 {% endblock %}
 

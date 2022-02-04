@@ -1,0 +1,15 @@
+<form method="post">
+    <div class="register-login-container">
+    {% csrf_token %}
+    <div class="form-error"> {{ from.non_field_errors }}</div>
+    {% for f in form %}
+    <p class="register-login"><label for="{{ f.id_for_label }}" class="form-label">
+        {{ f.label }}:</label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <button type="submit">{{ button }}</button>
+    {% if  forgot_password  %}
+        <a href="{% url 'password_reset' %}">Забыл пароль</a>
+    {% endif %}
+    </div>
+</form>

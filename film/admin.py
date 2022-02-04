@@ -1,5 +1,18 @@
 from django.contrib import admin
-from . import models
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
+from .models import *
+
+
+class ProfileInLineAdmin(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name = "Профиль"
+    verbose_name_plural = "Профили"
+
+
+class UserAdmin(BaseUserAdmin):
+    inlines = (ProfileInLineAdmin,)
 
 
 class CategoriesAdmin(admin.ModelAdmin):
@@ -9,11 +22,21 @@ class CategoriesAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
+
 class GenresAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
-admin.site.register(models.Video, VideoAdmin)
-admin.site.register(models.Categories, CategoriesAdmin)
-admin.site.register(models.Directors)
-admin.site.register(models.Actors)
-admin.site.register(models.Genres, GenresAdmin)
+
+class CommentAdmin(admin.ModelAdmin):
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'comment')
+
+
+admin.site.register(Video, VideoAdmin)
+admin.site.register(Categories, CategoriesAdmin)
+admin.site.register(Directors)
+admin.site.register(Actors)
+admin.site.register(Genres, GenresAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

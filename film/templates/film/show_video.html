@@ -1,46 +1,95 @@
 {% extends "film/base.html" %}
 {% load static %}
 {% block content %}
-    <div><h1>{{ video.name }}</h1></div>
-    <div>
-        <div><img width="188px" height="263px" src="{{ video.image.url }}" alt="{{ video.name }}"></div>
-        <div>
-            <table>
-                <tbody>
+    <div class="film-cat-box">
+        <div class="film-box">
+            <h2>{{ video.name }}</h2>
+            <div class="poster"><img width="188px" height="263px" src="{{ video.image.url }}" alt="{{ video.name }}">
+            </div>
+            <div class="film-information">
+                <table>
+                    <tbody>
                     <tr>
-                        <td><h3>Дата выхода:</h3></td>
-                        <td>{{ video.release_year }}</td>
+                        <td class="name-info"><h3>Название:</h3></td>
+                        <td class="content-info"><h3>{{ video.name }}</h3></td>
                     </tr>
                     <tr>
-                        <td><h3>Страна:</h3></td>
-                        <td>{{ video.country }}</td>
+                        <td class="name-info"><h3>Страна:</h3></td>
+                        <td class="content-info"><h3>{{ video.country }}</h3></td>
                     </tr>
                     <tr>
-                        <td><h3>Режиссер:</h3></td>
-                        <td>{% for director in video.directors.all %} {{ director }}, {% endfor %}</td>
+                        <td class="name-info"><h3>Режиссер:</h3></td>
+                        <td class="content-info"><h3>{% for director in video.directors.all %} {{ director }}
+                            , {% endfor %}</h3></td>
                     </tr>
                     <tr>
-                        <td><h3>Жанр:</h3></td>
-                        <td>{% for genr in video.genres.all %} {{ genr }}, {% endfor %}</td>
+                        <td class="name-info"><h3>Жанр:</h3></td>
+                        <td class="content-info"><h3>{% for genr in video.genres.all %} {{ genr }}, {% endfor %}</h3>
+                        </td>
                     </tr>
                     <tr>
-                        <td><h3>В ролях актеры:</h3></td>
-                        <td>{% for actor in video.actors.all %} {{ actor }}, {% endfor %}</td>
+                        <td class="name-info"><h3>В ролях актеры:</h3></td>
+                        <td class="content-info"><h3>{% for actor in video.actors.all %} {{ actor }}, {% endfor %}</h3>
+                        </td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div>
-        <div><h2>Про что фильм "{{ video.name }}"</h2></div>
-        <div>{{ video.description }}</div>
-    </div>
-    <br>
-    {% if video.video %}
-        <video src="{{ video.video.url }}" height="500" width="600" controls ></video>
-    {% else %}
-        <p>Контент отсутствует</p>
-    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="film-description">{{ video.description }}</div>
+            </div>
+            <div class="film-view">
+                {% if video.video %}
+                    <video src="{% url 'stream' video.id %}" height='360' width="640" controls>
 
+                    </video>
+                {% else %}
+                    <p>Контент отсутствует</p>
+                {% endif %}
+            </div>
+            <div class="comments-comment_form">
+                <div class="comment_form">
+                    {% if request.user.is_authenticated %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <p>{{ field }}</p>
+                                <div class="form_error">{{ field.errors }}</div>
+                            {% endfor %}
+                            <button type="submit">Добавить комментарий</button>
+                        </form>
+                    {% else %}
+                        <p>Комментарии могут оставлять только авторизованные пользователи</p>
+                        <p><a href="{% url 'login' %}">Авторизоваться</a></p>
+                    {% endif %}
+                </div>
+                {% with comments=video.comments.all comments_total=video.comments.count %}
+                    <div class="comments">
+                    <h2 class="comment_amount">{{ comments_total }}
+                        Комментари{{ comments_total|pluralize:"й,ев" }}: </h2>
+                    <div class="comments_list">
+                        {% for comment in comments %}
+                            <div class="{% cycle 'even' 'odd' %} comment">
+                                <p class="comment_info">Добавил <span>{{ comment.name }}</span> {{ comment.created }}
+                                </p>
+                                <p class="comment_body">
+                                {% if comment.name.photo.photo %}
+                                    <img height="100" width="100" src="{{ comment.name.photo.photo.url }}" alt="">
+                                {% else %}
+                                    <img src="{% static 'film/images/noavatar.png' %}" alt="">
+                                {% endif %}
+                                <span>{{ comment.comment }}</span>
+                                </p>
+                            </div>
+                        {% empty %}
+                            <p>Комментарии отсутствуют</p>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% include "film/my_templates/genres.html" %}
+    </div>
 
 {% endblock %}

@@ -1,15 +1,5 @@
 {% extends "film/base.html" %}
+{% load film_tags %}
 {% block content %}
-    {% if genre_video %}
-        {% for film in genre_video %}
-            <div>
-                <div><a href="{{ film.get_absolute_url }}"><img alt="Film poster" class="img-poster"
-                                                                src="{{ film.image.url }}"></a></div>
-                <div><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <h2>Фильмы по жанру: {{ genre }} отсутствуют</h2>
-    {% endif %}
-    {% include "film/my_templates/genres.html" %}
+    {% show_content genre_video title %}
 {% endblock %}

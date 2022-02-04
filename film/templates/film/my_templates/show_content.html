@@ -1,0 +1,19 @@
+<div class="film-cat-box">
+    <div class="film-box">
+        <h2>{{ content_title }}</h2>
+        {% if list_video %}
+            <ul>
+                {% for film in list_video|slice:':12' %}
+                    <li><a href="{{ film.get_absolute_url }}"><img src="{{ film.image.url }}" alt="{{ film.name }}">
+                        <p>{{ film.name }}</p>
+                    </a></li>
+                {% endfor %}
+            </ul>
+        {% elif query %}
+            <div class="no-search">
+                <p>Нет фильмов по запросу "{{ query }}"</p>
+            </div>
+        {% endif %}
+    </div>
+    {% include "film/my_templates/genres.html" %}
+</div>
