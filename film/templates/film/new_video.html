@@ -1,5 +1,5 @@
 {% extends "film/base.html" %}
 {% load film_tags %}
 {% block content %}
-    {% show_content new_videos "Новинки" %}
+    {% show_content new_videos "Новинки" paginator page_obj %}
 {% endblock %}

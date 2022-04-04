@@ -3,8 +3,8 @@
 {% block content %}
     <div class="film-cat-box">
         <div class="film-box">
-            <h2>{{ video.name }}</h2>
-            <div class="poster"><img width="188px" height="263px" src="{{ video.image.url }}" alt="{{ video.name }}">
+            <h2 id="film_name">{{ video.name }}</h2>
+            <div class="poster"><img width="188px" height="263px" src="{{ video.image }}" alt="{{ video.name }}">
             </div>
             <div class="film-information">
                 <table>
@@ -14,38 +14,99 @@
                         <td class="content-info"><h3>{{ video.name }}</h3></td>
                     </tr>
                     <tr>
+                        <td class="name-info"><h3>Оригинальное название:</h3></td>
+                        <td class="content-info"><h3>{{ video.original_name }}</h3></td>
+                    </tr>
+                    <tr>
+                        <td class="name-info"><h3>Год:</h3></td>
+                        <td class="content-info"><h3>{{ video.release_year }}</h3></td>
+                    </tr>
+                    <tr>
                         <td class="name-info"><h3>Страна:</h3></td>
                         <td class="content-info"><h3>{{ video.country }}</h3></td>
                     </tr>
                     <tr>
                         <td class="name-info"><h3>Режиссер:</h3></td>
-                        <td class="content-info"><h3>{% for director in video.directors.all %} {{ director }}
-                            , {% endfor %}</h3></td>
+                        <td class="content-info">
+                            <h3>
+                                {% for director in video.directors.all %}
+                                    {% if forloop.last %}
+                                        {{ director }}
+                                    {% else %}
+                                        {{ director }},
+                                    {% endif %}
+                                {% endfor %}
+                            </h3>
+                        </td>
                     </tr>
                     <tr>
                         <td class="name-info"><h3>Жанр:</h3></td>
-                        <td class="content-info"><h3>{% for genr in video.genres.all %} {{ genr }}, {% endfor %}</h3>
+                        <td class="content-info">
+                            <h3>
+                                {% for genr in video.genres.all %}
+                                    {% if forloop.last %}
+                                        {{ genr }}
+                                    {% else %}
+                                        {{ genr }},
+                                    {% endif %}
+                                {% endfor %}
+                            </h3>
                         </td>
                     </tr>
                     <tr>
                         <td class="name-info"><h3>В ролях актеры:</h3></td>
-                        <td class="content-info"><h3>{% for actor in video.actors.all %} {{ actor }}, {% endfor %}</h3>
+                        <td class="content-info">
+                            <h3>
+                                {% for actor in video.actors.all %}
+                                    {% if forloop.last %}
+                                        {{ actor }}
+                                    {% else %}
+                                        {{ actor }},
+                                    {% endif %}
+                                {% endfor %}
+                            </h3>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div>
-                <div class="film-description">{{ video.description }}</div>
+
+                <div class="film-description">{% autoescape off %}{{ video.description }} {% endautoescape %}</div>
             </div>
             <div class="film-view">
                 {% if video.video %}
-                    <video src="{% url 'stream' video.id %}" height='360' width="640" controls>
-
-                    </video>
+                    <iframe src="{{ video.video }}" allow="autoplay" height='400' width="660" allowfullscreen=""
+                            webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen=""
+                            msallowfullscreen=""></iframe>
+                    {#                    <video src="{% url 'stream' video.id %}" height='360' width="640" controls></video>#}
                 {% else %}
                     <p>Контент отсутствует</p>
                 {% endif %}
+                <div class="form video_rating">
+                    {% csrf_token %}
+                    <div data-ajax="true" class="rating rating_set">
+                        <div class="rating_video">
+                            <div class="rating_body">
+                                <div class="rating_active"></div>
+                                <div class="rating_items">
+                                    {% for i in '0123456789'|make_list %}
+                                        <input type="radio" class="rating_item"
+                                               value="{{ forloop.counter }}"
+                                               name="rating">
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating_info">
+                            <div class="rating_info_value">Рейтинг фильма: <span
+                                    class="rating_value">{{ video.rating|floatformat }}</span></div>
+                            <div class="rating_info_amount_voters">Голосовало <span
+                                    class="amount_voters">{{ amount_voters }}</span> человек
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="comments-comment_form">
                 <div class="comment_form">
@@ -69,18 +130,22 @@
                         Комментари{{ comments_total|pluralize:"й,ев" }}: </h2>
                     <div class="comments_list">
                         {% for comment in comments %}
-                            <div class="{% cycle 'even' 'odd' %} comment">
-                                <p class="comment_info">Добавил <span>{{ comment.name }}</span> {{ comment.created }}
-                                </p>
-                                <p class="comment_body">
-                                {% if comment.name.photo.photo %}
-                                    <img height="100" width="100" src="{{ comment.name.photo.photo.url }}" alt="">
-                                {% else %}
-                                    <img src="{% static 'film/images/noavatar.png' %}" alt="">
-                                {% endif %}
-                                <span>{{ comment.comment }}</span>
-                                </p>
-                            </div>
+                            {% if comment.active %}
+                                <div class="{% cycle 'even' 'odd' %} comment">
+                                    <p class="comment_info">Добавил
+                                        <span>{{ comment.name }}</span> {{ comment.created }}
+                                    </p>
+                                    <p class="comment_body">
+                                        {% if comment.name.photo.photo %}
+                                            <img height="100" width="100" src="{{ comment.name.photo.photo.url }}"
+                                                 alt="">
+                                        {% else %}
+                                            <img src="{% static 'film/images/noavatar.png' %}" alt="">
+                                        {% endif %}
+                                        <span>{{ comment.comment }}</span>
+                                    </p>
+                                </div>
+                            {% endif %}
                         {% empty %}
                             <p>Комментарии отсутствуют</p>
                         {% endfor %}

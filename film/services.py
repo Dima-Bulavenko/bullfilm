@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import IO, Generator
 from django.shortcuts import get_object_or_404
-
+import json
 from .models import Video
 
 
@@ -51,3 +51,6 @@ def open_file(request, video_pk: int) -> tuple:
         content_range = f'bytes {range_start}-{range_end}/{file_size}'
 
     return file, status_code, content_length, content_range
+
+
+

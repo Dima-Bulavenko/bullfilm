@@ -1,21 +1,14 @@
 {% extends "film/base.html" %}
+{% load static %}
 {% load film_tags %}
 {% block content %}
-    <div class="content">
+    {% if page_obj.number == 1 %}
         <div class="video">
-            <div class="player">
-                {% with filter_video|first as first_video %}
-                    <video height='360' width="640" controls>
-                        <source src="{% url 'stream' first_video.id %}" type="video/mp4"/>
-{#                        <source src="{% url 'stream' first_video.id %}" type="video/webm"/>#}
-                    </video>
-                {% endwith %}
-            </div>
             <div class="top-film">
                 <ul>
-                    {% for film in filter_video|slice:':3' %}
+                    {% for film in videos|slice:':3' %}
                         <li>
-                            <div class="poster"><a href="{{ film.get_absolute_url }}"><img src="{{ film.image.url }}"
+                            <div class="poster"><a href="{{ film.get_absolute_url }}"><img src="{{ film.image }}"
                                                                                            alt="poster"></a></div>
                             <div class="name"><p>{{ film.name }}</p> <a href="{{ film.get_absolute_url }}">Смотреть
                                 онлайн</a></div>
@@ -23,11 +16,34 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div class="player">
+                {% with videos|first as first_video %}
+                    <iframe src="{{ first_video.video }}" allow="autoplay" height='400' width="660" allowfullscreen=""
+                            webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen=""
+                            msallowfullscreen=""></iframe>
+                    {#                    <video height='400' width="660" controls>#}
+                    {#                        <source src="{% url 'stream' first_video.id %}" type="video/mp4"/>#}
+                    {#                        <source src="{% url 'stream' first_video.id %}" type="video/webm"/>#}
+                    {#                    </video>#}
+                {% endwith %}
+            </div>
         </div>
         <div class="carousel-box">
-            <h2>Новинки</h2>
+            <h2 class="title1">Новинки</h2>
+            <div class="slider">
+                {% for f in videos|slice:':12' %}
+                    <div class="slider_item">
+                        <a href="{{ f.get_absolute_url }}">
+                            <img src="{{ f.image }}" alt="{{ f.name }}">
+                            <p>{{ f.name }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-        {% show_content video "Фильмы онлайн" %}
-    </div>
-
+    {% endif %}
+    {% show_content videos "Фильмы онлайн" paginator page_obj %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'film/js/carousel_slider.js' %}"></script>
+    <script src="{% static 'film/js/slick.min.js' %}"></script>
 {% endblock %}

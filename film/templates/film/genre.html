@@ -1,5 +1,5 @@
 {% extends "film/base.html" %}
 {% load film_tags %}
 {% block content %}
-    {% show_content genre_video title %}
+    {% show_content genre_video title paginator page_obj%}
 {% endblock %}

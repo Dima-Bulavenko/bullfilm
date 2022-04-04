@@ -1,5 +1,5 @@
+<div class="register-login-container">
 <form method="post">
-    <div class="register-login-container">
     {% csrf_token %}
     <div class="form-error"> {{ from.non_field_errors }}</div>
     {% for f in form %}
@@ -11,5 +11,5 @@
     {% if  forgot_password  %}
         <a href="{% url 'password_reset' %}">Забыл пароль</a>
     {% endif %}
-    </div>
 </form>
+</div>

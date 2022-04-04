@@ -1,19 +1,52 @@
+{% load film_tags %}
 <div class="film-cat-box">
     <div class="film-box">
         <h2>{{ content_title }}</h2>
-        {% if list_video %}
-            <ul>
-                {% for film in list_video|slice:':12' %}
-                    <li><a href="{{ film.get_absolute_url }}"><img src="{{ film.image.url }}" alt="{{ film.name }}">
-                        <p>{{ film.name }}</p>
-                    </a></li>
-                {% endfor %}
-            </ul>
+        {% if videos %}
+            <div class="listcontent">
+                <ul>
+                    {% for film in videos %}
+                        <li>
+                            <div class="content_box">
+                                <a href="{{ film.get_absolute_url }}">
+                                    <img src="{{ film.image }}" alt="{{ film.name }}">
+                                    <p class="film_name">{{ film.name }}</p>
+                                </a>
+                                <div class="form">
+                                    {% csrf_token %}
+                                    <div data-ajax="true" class="rating rating_set">
+                                        <div class="rating_body">
+                                            <div class="rating_active"></div>
+                                            <div class="rating_items">
+                                                {% for i in '0123456789'|make_list %}
+                                                    <input type="radio" class="rating_item"
+                                                           value="{{ forloop.counter }}"
+                                                           name="rating">
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div style=" display: none" class="rating_value">{{ film.rating }}</div>
+                                    </div>
+                                </div>
+                                <div class="content_data">
+                                    {% chek_date_difference film.update_time as date %}
+                                    <div class="time">{{ date.time }}</div>
+                                    <div class="year">{{ date.date }}: {{ film.release_year }}</div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% include "film/my_templates/paginator.html" %}
+            </div>
         {% elif query %}
             <div class="no-search">
                 <p>Нет фильмов по запросу "{{ query }}"</p>
             </div>
         {% endif %}
+
     </div>
+
+
     {% include "film/my_templates/genres.html" %}
 </div>
